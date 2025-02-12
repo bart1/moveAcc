@@ -1,8 +1,8 @@
 ---
-title: "Getting started"
+title: "Introduction to moveAcc"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting started}
+  %\VignetteIndexEntry{Introduction to moveAcc}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
