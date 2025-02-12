@@ -101,6 +101,8 @@ mt_stack(lbbg_data, kinkajous_data)
 
 # Plotting
 
+With the `plot_time` function it is possible to explor the acceleration bursts. In this plot you can zoom using your mouse.
+
 ```{r plot}
 plot_time(lbbg_data$acceleration, mt_time(lbbg_data))
 ```
