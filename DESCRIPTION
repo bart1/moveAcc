@@ -28,5 +28,5 @@ Suggests:
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
-URL: https://github.com/bart1/moveAcc
+URL: https://github.com/bart1/moveAcc, https://bart1.github.io/moveAcc/
 BugReports: https://github.com/bart1/moveAcc/issues

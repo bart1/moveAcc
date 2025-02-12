@@ -4,6 +4,10 @@
 # moveAcc
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/bart1/moveAcc/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bart1/moveAcc/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/bart1/moveAcc/graph/badge.svg)](https://app.codecov.io/gh/bart1/moveAcc)
 <!-- badges: end -->
 
 ## Design

@@ -1,0 +1,107 @@
+---
+title: "Getting started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+# if (Sys.info()["user"] != "bart") {
+if (Sys.getenv("MBPWD") != "") {
+  options(keyring_backend = "env")
+  move2::movebank_store_credentials("move2_user", Sys.getenv("MBPWD"))
+} else {
+  knitr::opts_chunk$set(eval = FALSE)
+}
+# }
+Sys.setlocale("LC_TIME", "en_US.utf8")
+```
+
+```{r setup}
+library(moveAcc)
+```
+The goal of the package is to create a vector representation of acceleration bursts in R. Acceleration bursts are a frequently collected by animal tracking devices and consist of measurements of the acceleration in one till three axis. These measurements are recorded with a fixed frequency for a few seconds. These burst are frequently considered one "instantaneous" sample of the activity or behavior of an animal.
+
+By creating a vector representation it becomes more easy to manipulate these bursts and for example add them to a data frame. 
+
+# Creating a burst
+
+To create a acceleration vector a list of acceleration measurements are combined with the measurement frequency. Each element of the list is a matrix with the columns being the axis the acceleration is measured in and the rows being the repeated measurements.
+
+```{r create}
+x <- acc(
+  bursts = list(cbind(
+    x = sin(1:30 / 10),
+    y = cos(1:30 / 10),
+    z = 1:30 / 10
+  )),
+  frequency = units::as_units(40, "Hz")
+)
+x
+```
+When printed it reports the average acceleration for each axis of each burst and the measurement frequency. Multiple bursts can be combined with diverse properties can be combined.
+
+```{r combine}
+y <- acc(
+  bursts = list(
+    cbind(x = sin(1:20 / 10), y = cos(1:20 / 10)),
+    cbind(x = sin(1:20 / 10 + 2), y = cos(1:20 / 10 + 3))
+  ),
+  frequency = units::as_units(30, "Hz")
+)
+y
+c(x, y)
+```
+
+
+
+# Loading data
+
+Naturally most of the time data won't be generated directly in R but rather loaded from local files or databases like movebank. For data from movebank some quick conversion options have been build. These take `move2` objects as an input. For now conversion functions for data from eobs and ornitella tags exists.
+
+Here is an example for eobs tags. When the `as_acc` function is applied to a `move2` it attempts to detect the columns representing the acceleration data. 
+
+```{r eobs}
+require(dplyr, quietly = TRUE)
+require(move2, quietly = TRUE)
+kinkajous_data <- movebank_download_study("Kinkajous on Pipeline Road Panama",
+  sensor_type_id = c("acceleration", "gps"), "license-md5" = "6e1743b4b2a919df0f3b4167c94786d9"
+)
+kinkajous_data <- kinkajous_data %>%
+  mutate(acceleration = as_acc(.)) %>%
+  select(acceleration)
+tail(kinkajous_data)
+```
+The same can be done with ornitella data.
+
+```{r ornitella}
+d <- as.Date("2021-3-3")
+
+lbbg_data <- move2::movebank_download_study("LBBG_ZEEBRUGGE - Lesser black-backed gulls ",
+  sensor_type_id = c("gps", "acceleration"),
+  timestamp_start = as.POSIXct(d),
+  timestamp_end = as.POSIXct(d + 1)
+)
+lbbg_data <- lbbg_data %>%
+  mutate(acceleration = as_acc(.))  %>%
+  filter(!is.na(acceleration) | sensor_type_id==653)%>%
+  select(acceleration)
+lbbg_data
+```
+```{r stack}
+mt_stack(lbbg_data, kinkajous_data)
+```
+# Exploring data
+
+# Plotting
+
+```{r plot}
+plot_time(lbbg_data$acceleration, mt_time(lbbg_data))
+```
+
