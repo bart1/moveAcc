@@ -5,7 +5,7 @@ Version: 0.1.0
 Authors@R: c(
     person("Bart", "Kranstauber", email = "b.kranstauber@uva.nl", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8303-780X")))
-Description: This package is developed to handel bursted acceleration data. It allows for quick visualizations and convient manipulation
+Description: This package is developed to handel bursted acceleration data. It allows for quick visualizations and convient manipulation.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
