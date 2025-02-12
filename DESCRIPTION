@@ -1,0 +1,32 @@
+Package: moveAcc
+Type: Package
+Title: Handling bursted acceleration data 
+Version: 0.1.0
+Authors@R: c(
+    person("Bart", "Kranstauber", email = "b.kranstauber@uva.nl", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-8303-780X")))
+Description: This package is developed to handel bursted acceleration data. It allows for quick visualizations and convient manipulation
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    assertthat,
+    pillar,
+    purrr,
+    rlang,
+    units,
+    vctrs
+Suggests: 
+    curl,
+    dplyr,
+    dygraphs,
+    keyring,
+    knitr,
+    move2,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+RoxygenNote: 7.3.2
+VignetteBuilder: knitr
+URL: https://github.com/bart1/moveAcc
+BugReports: https://github.com/bart1/moveAcc/issues
