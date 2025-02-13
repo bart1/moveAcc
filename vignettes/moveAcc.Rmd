@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -23,7 +23,7 @@ if (Sys.getenv("MBPWD") != "") {
 Sys.setlocale("LC_TIME", "en_US.utf8")
 ```
 
-```{r setup}
+```{r load}
 library(moveAcc)
 ```
 The goal of the package is to create a vector representation of acceleration bursts in R. Acceleration bursts are a frequently collected by animal tracking devices and consist of measurements of the acceleration in one till three axis. These measurements are recorded with a fixed frequency for a few seconds. These burst are frequently considered one "instantaneous" sample of the activity or behavior of an animal.
@@ -103,7 +103,42 @@ mt_stack(lbbg_data, kinkajous_data)
 
 With the `plot_time` function it is possible to explor the acceleration bursts. In this plot you can zoom using your mouse.
 
-```{r plot}
+```{r plot, fig.width=6}
 plot_time(lbbg_data$acceleration, mt_time(lbbg_data))
 ```
 
+Alternatively you can plot one burst directly, in this case showing the clear wing beats on the z axis.
+
+
+```{r plot_one, fig.width=6}
+plot_time(lbbg_data$acceleration[340], mt_time(lbbg_data)[340])
+```
+We can also visualize one burst in three dimensions showing the cyclic patterns in the acceleration.
+
+```{r plot3d, fig.width=6, fig.height=6}
+bb<-vctrs::field(lbbg_data$acceleration[340],"bursts")[[1]]
+b<-units::drop_units(bb)
+e<-0.1
+persp(z=matrix(min(b[,'tilt_z'])-e, ncol=2, nrow=2),
+      x=range(b[,'tilt_x']),
+      y=range(b[,'tilt_y']),       
+      xlim=range(b[,'tilt_x'])+c(-e,e),
+      ylim=range(b[,'tilt_y'])+c(-e,e), 
+      zlim=range(b[,'tilt_z'])+c(-e,e),
+      border=NA,
+      xlab=paste0("X [",as.character(units(bb)),']'), 
+      ticktype = "detailed", cex.axis = 0.65,
+      ylab=paste0("Y [",as.character(units(bb)),']'), 
+      zlab=paste0("Z [",as.character(units(bb)),']'), 
+      theta = -160, phi = 20, expand = 0.5, col = "white", scale=F)->p
+# Draw line on bottom of plot
+lines(trans3d(b[,'tilt_x'],b[,'tilt_y'],min(b[,'tilt_z'])-e,p), col="tomato")
+# Lines to connect observations to bottom
+apply(b,1, function(x, bottom){
+  lines(trans3d(x['tilt_x'],x['tilt_y'],c(x['tilt_z'], bottom-e),p), col="gray")
+}, bottom=min(b[,'tilt_z']))
+
+lines(trans3d(b[,'tilt_x'],b[,'tilt_y'],b[,'tilt_z'],p), col="red")
+points(trans3d(b[,'tilt_x'],b[,'tilt_y'],b[,'tilt_z'],p), col="red", pch=19)
+
+```
