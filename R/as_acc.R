@@ -25,28 +25,24 @@ as_acc.move2 <- function(x, ...) {
   stop("No acc conversion implemented")
 }
 as_acc_move2_ornitella <- function(x, ...) {
-  lst <- lapply(
-    lapply(split(data.frame(x)[, c("tilt_x", "tilt_y", "tilt_z")], x$start_timestamp), matrix),
-    \(x) {
-      v <- do.call("c", x)
-      m <- matrix(v, ncol = 3) * units::as_units(units::deparse_unit(v))
-      colnames(m) <- colnames(x)
-      m
-    }
-  )
+  assertthat::assert_that(units(x$tilt_x)==units(x$tilt_y))
+  assertthat::assert_that(units(x$tilt_x)==units(x$tilt_z))
+  assertthat::assert_that(!any(unlist(lapply(lapply(split( move2::mt_track_id(x),x$start_timestamp),unique), length))!=1))
+  m<-as.matrix(data.frame(x)[, c("tilt_x", "tilt_y", "tilt_z")])* units::as_units(units::deparse_unit(x$tilt_x))
+  lst<-purrr::map(split(seq_len(nrow(m)), x$start_timestamp), ~m[.x,])
+
   frq <- do.call(c, lapply(
-    lapply(
       lapply(
-        lapply(
+       diffs<- lapply(
           split(
             move2::mt_time(x),
             x$start_timestamp
           ), diff
         ), units::as_units
       ),
-      \(x) 1 / x
-    ), mean
+      \(x) mean(1 / x)
   ))
+  assertthat::assert_that( all(unlist(diffs)>0))
   acc <- vec_rep(new_acc(list(NULL), units::set_units(NA, "Hz")), nrow(x))
   s <- !duplicated(x$start_timestamp) & !is.na(x$start_timestamp)
   acc[s] <- new_acc(lst, frq)
