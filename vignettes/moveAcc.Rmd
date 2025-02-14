@@ -83,14 +83,14 @@ The same can be done with ornitella data.
 ```{r ornitella}
 d <- as.Date("2021-3-3")
 
-lbbg_data <- move2::movebank_download_study("LBBG_ZEEBRUGGE - Lesser black-backed gulls ",
+lbbg_data <- movebank_download_study("LBBG_ZEEBRUGGE - Lesser black-backed gulls ",
   sensor_type_id = c("gps", "acceleration"),
   timestamp_start = as.POSIXct(d),
   timestamp_end = as.POSIXct(d + 1)
 )
 lbbg_data <- lbbg_data %>%
-  mutate(acceleration = as_acc(.))  %>%
-  filter(!is.na(acceleration) | sensor_type_id==653)%>%
+  mutate(acceleration = as_acc(.)) %>%
+  filter(!is.na(acceleration) | sensor_type_id==653) %>%
   select(acceleration)
 lbbg_data
 ```
@@ -113,6 +113,19 @@ Alternatively you can plot one burst directly, in this case showing the clear wi
 ```{r plot_one, fig.width=6}
 plot_time(lbbg_data$acceleration[340], mt_time(lbbg_data)[340])
 ```
+
+Using the `peak_frequency` function we can identify the wing beat frequency in this acceleration burst.
+```{r pf}
+peak_frequency(lbbg_data$acceleration[340])
+```
+
+Due to the nature of the fast fourier transform there is a limit to the frequencies that can be identified. To resolve this zero padding can be used, this is controlled by the resolution argument. By setting this a more detailed estimate of the wing beat frequency can be obtained.
+
+```{r pf_pad}
+peak_frequency(lbbg_data$acceleration[340], 
+               resolution = units::set_units(.01,"Hz"))
+```
+
 We can also visualize one burst in three dimensions showing the cyclic patterns in the acceleration.
 
 ```{r plot3d, fig.width=6, fig.height=6}
