@@ -13,7 +13,17 @@ test_that("manipulation", {
   expect_length(x[rep(1, 3)], 3)
 })
 
-
+test_that("logical",{
+  expect_false(is_acc(NA))
+  expect_false(is_acc(cbind(1,1:3)))
+  expect_true(is_acc(acc()))
+  expect_true(is_acc(acc(list(
+    matrix(1:12, ncol = 3, dimnames = list(NULL, letters[1:3])),
+    matrix(1:8, ncol = 2, dimnames = list(NULL, letters[4:5]))
+  ), frequency = 2:3)))
+  expect_true(is_acc(acc(list(NULL
+  ), frequency = NA)))
+})
 
 test_that("properties are correctly calculated",{
 

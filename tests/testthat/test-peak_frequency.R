@@ -70,3 +70,9 @@ test_that("Resolution alows to identify partial frequencies", {
 
   })
 
+test_that("works with and without units", {
+  a<-new_acc(list(cbind(c(1:5,5:1, 1:5), c(4,3,4))), units::set_units(23,'Hz'))
+  b<-new_acc(list(units::set_units(cbind(c(1:5,5:1, 1:5), c(4,3,4)),"m/s")), units::set_units(23,'Hz'))
+
+  expect_equal(peak_frequency(a), peak_frequency(b))
+})
