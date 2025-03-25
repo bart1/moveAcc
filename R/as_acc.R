@@ -1,8 +1,16 @@
 #' Convert to acc
 #'
-#' @param x A `move2` containing acceleration data as collected by EOBS or ornitella tracking devices.
+#' In many cases the `as_acc` function will directly create an acceleration vector from input data
+#'
+#' @param x A `move2` containing acceleration data as collected by EOBS or ornitella tracking devices. Most of the time
+#'   this will be either loaded from disk using [move2::mt_read] or downloaded using [move2::movebank_download_study].
 #'
 #' @param ... currently not used
+#'
+#' @details The resulting vector will be as long as the input. This means it can, for example, be added as a column to a
+#' `data.frame`. For some tags this means `NA` values are inserted when one burst is stored over multiple rows of a
+#' `data.frame`.
+#'
 #'
 #' @export
 

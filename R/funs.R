@@ -72,6 +72,7 @@ vec_cast.acc.acc <- function(x, to, ...) {
 }
 
 
+
 if (F) {
   static_acc(x) |> bind_rows() -> df
 

@@ -5,7 +5,7 @@
 \alias{n_samples}
 \alias{is_uniform}
 \alias{is_acc}
-\title{Functions to explore an `acc` vector}
+\title{Functions to explore an \code{acc} vector}
 \usage{
 n_axis(x)
 
@@ -19,7 +19,7 @@ is_acc(x)
 \item{x}{an acc vector}
 }
 \description{
-Functions to explore an `acc` vector
+Functions to explore an \code{acc} vector
 }
 \examples{
 x <- acc(

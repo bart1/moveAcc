@@ -9,7 +9,7 @@ plot_time(x, time, ylab = "Acceleration")
 \arguments{
 \item{x}{an acc vector}
 
-\item{time}{a `POSIXct` with the start time of acc bursts}
+\item{time}{a \code{POSIXct} with the start time of acc bursts}
 
 \item{ylab}{A character with the y axis label}
 }

@@ -27,20 +27,29 @@ test_that("logical",{
 
 test_that("properties are correctly calculated",{
 
-  x <- acc(
+  xa <- acc(
     bursts = list(
       cbind(x = sin(1:30 / 10), y = cos(1:30 / 10), z = 1),
       cbind(x = sin(1:20 / 10 + 2), y = cos(1:20 / 10 + 3))
     ),
     frequency = units::as_units(c(20, 30), "Hz")
   )
-  x <- c(x, NA)
+  x <- c(xa, NA)
+  expect_true(is_acc(x))
   expect_length(x,3)
   expect_identical(is.na(x),c(F,F,T))
   expect_identical(n_axis(x), c(3L,2L,NA))
   expect_identical(n_samples(x), c(30L,20L,NA))
   expect_false(is_uniform(x))
   expect_true(is_uniform(x[c(1,3)]))
+  x2 <- vec_c(NA,xa)
+  expect_true(is_acc(x2))
+  expect_length(x2,3)
+  expect_identical(is.na(x2),c(T,F,F))
+  expect_identical(n_axis(x2), c(NA,3L,2L))
+  expect_identical(n_samples(x2), c(NA,30L,20L))
+  expect_false(is_uniform(x2))
+  expect_true(is_uniform(x2[c(1,3)]))
 
 })
 
