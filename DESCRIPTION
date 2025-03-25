@@ -22,6 +22,8 @@ Suggests:
     dygraphs,
     keyring,
     knitr,
+    leaflet,
+    leafpop,
     move2,
     rmarkdown,
     testthat (>= 3.0.0),

@@ -1,0 +1,55 @@
+---
+title: "Mapping acceleration data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Mapping acceleration data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(moveAcc)
+require(dplyr, quietly = TRUE)
+require(move2, quietly = TRUE)
+require(leaflet, quietly = TRUE)
+albatross_data <- movebank_download_study(
+  "Galapagos Albatrosses",
+  `individual_local_identifier` = c("4264-84830852", "4266-84831108"),
+  sensor_type_id = c("acceleration", "gps")
+)
+albatross_data <- albatross_data %>%
+  mutate(acceleration = as_acc(.))
+dd <- albatross_data |>
+  select(eobs_start_timestamp) |>
+  filter(!sf::st_is_empty(geometry)) |>
+  left_join(albatross_data |> filter(!is.na(acceleration)) |> sf::st_drop_geometry(), join_by(closest(eobs_start_timestamp < eobs_start_timestamp), individual_local_identifier == individual_local_identifier))
+pal <- colorFactor("Set1", dd$individual_local_identifier)
+aa <- quantile(do.call(rbind, vctrs::field(dd$acceleration, "bursts")), probs = c(.0001, .9999))
+
+a <- leaflet() %>%
+  addTiles() %>%
+  addPolylines(
+    data = mt_track_lines(albatross_data |> 
+                                       filter(!sf::st_is_empty(geometry))), color = ~ pal(individual_local_identifier)) %>%
+  addCircleMarkers(
+    data = dd, color = ~ pal(individual_local_identifier),
+    popup = leafpop::popupGraph(
+      mapply( function(x, range) {
+          dygraphs::dyAxis(x, name = "y", valueRange =round(unname(range)))
+        },
+        mapply(plot_time, dd$acceleration, dd$timestamp.x, SIMPLIFY = FALSE),
+        MoreArgs = list(range=aa)
+       , SIMPLIFY = FALSE
+      ), "html",
+      height = 350, width = 600
+    )
+  ) %>% 
+  addLegend(pal=pal, values = mt_track_data(albatross_data)$individual_local_identifier)
+```
