@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(moveAcc)
+library(move2Acc)
 
-test_check("moveAcc")
+test_check("move2Acc")

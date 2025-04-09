@@ -1,4 +1,4 @@
-Package: moveAcc
+Package: move2Acc
 Type: Package
 Title: Handling bursted acceleration data 
 Version: 0.1.0
@@ -32,5 +32,5 @@ Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
-URL: https://github.com/bart1/moveAcc, https://bart1.github.io/moveAcc/
-BugReports: https://github.com/bart1/moveAcc/issues
+URL: https://github.com/bart1/move2Acc, https://bart1.github.io/move2Acc/
+BugReports: https://github.com/bart1/move2Acc/issues

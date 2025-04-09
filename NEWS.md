@@ -1,4 +1,4 @@
 
-# moveAcc 0.1.0
+# move2Acc 0.1.0
 
 * Initial package development

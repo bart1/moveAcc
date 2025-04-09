@@ -1,8 +1,8 @@
 ---
-title: "Introduction to moveAcc"
+title: "Introduction to move2Acc"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to moveAcc}
+  %\VignetteIndexEntry{Introduction to move2Acc}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -24,7 +24,7 @@ Sys.setlocale("LC_TIME", "en_US.utf8")
 ```
 
 ```{r load}
-library(moveAcc)
+library(move2Acc)
 ```
 The goal of the package is to create a vector representation of acceleration bursts in R. Acceleration bursts are a frequently collected by animal tracking devices and consist of measurements of the acceleration in one till three axis. These measurements are recorded with a fixed frequency for a few seconds. These burst are frequently considered one "instantaneous" sample of the activity or behavior of an animal.
 
@@ -113,19 +113,6 @@ Alternatively you can plot one burst directly, in this case showing the clear wi
 ```{r plot_one, fig.width=6}
 plot_time(lbbg_data$acceleration[340], mt_time(lbbg_data)[340])
 ```
-
-Using the `peak_frequency` function we can identify the wing beat frequency in this acceleration burst.
-```{r pf}
-peak_frequency(lbbg_data$acceleration[340])
-```
-
-Due to the nature of the fast fourier transform there is a limit to the frequencies that can be identified. To resolve this zero padding can be used, this is controlled by the resolution argument. By setting this a more detailed estimate of the wing beat frequency can be obtained.
-
-```{r pf_pad}
-peak_frequency(lbbg_data$acceleration[340], 
-               resolution = units::set_units(.01,"Hz"))
-```
-
 We can also visualize one burst in three dimensions showing the cyclic patterns in the acceleration.
 
 ```{r plot3d, fig.width=6, fig.height=6}
@@ -153,5 +140,18 @@ apply(b,1, function(x, bottom){
 
 lines(trans3d(b[,'tilt_x'],b[,'tilt_y'],b[,'tilt_z'],p), col="red")
 points(trans3d(b[,'tilt_x'],b[,'tilt_y'],b[,'tilt_z'],p), col="red", pch=19)
+
+```
+
+
+
+```{r}
+plot_time(lbbg_data$acceleration[334], mt_time(lbbg_data)[340])
+bb<-vctrs::field(lbbg_data$acceleration[334],"bursts")[[1]]
+
+z<-bb[,3]
+m1<-Mod(fft(c(z,rep(units::set_units(0, 'standard_free_fall'), length(z)*199))))
+(which.max(tail(head(m1, round(length(m1)/2)),-200))+200)*
+vctrs::field(lbbg_data$acceleration[340],"frequency") /(nrow(bb)*200)
 
 ```

@@ -1,15 +1,15 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# moveAcc
+# move2Acc
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/bart1/moveAcc/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bart1/moveAcc/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/bart1/move2Acc/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bart1/move2Acc/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/bart1/moveAcc/graph/badge.svg)](https://app.codecov.io/gh/bart1/moveAcc)
+coverage](https://codecov.io/gh/bart1/move2Acc/graph/badge.svg)](https://app.codecov.io/gh/bart1/move2Acc)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/moveAcc)](https://CRAN.R-project.org/package=moveAcc)
+status](https://www.r-pkg.org/badges/version/move2Acc)](https://CRAN.R-project.org/package=move2Acc)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
@@ -27,11 +27,11 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 ## Installation
 
-You can install the development version of moveAcc like so:
+You can install the development version of move2Acc like so:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("bart1/moveAcc")
+remotes::install_github("bart1/move2Acc")
 ```
 
 ## Example
@@ -39,6 +39,6 @@ remotes::install_github("bart1/moveAcc")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(moveAcc)
+library(move2Acc)
 ## basic example code
 ```
